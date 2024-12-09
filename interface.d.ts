@@ -1,5 +1,5 @@
 export interface IElectron {
-  ping: () => string
+  ping: () => Promise<string>
   chat: (input: string) => Promise<string>
 }
 

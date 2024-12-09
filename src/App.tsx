@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import { chat } from './lib/chatHelper'
 
 function App() {
 
@@ -15,7 +16,8 @@ function App() {
         <button onClick={async () => {
           setLoading(true)
           try {
-            const result = await window.electron.chat('How to do my expenses?')
+            // const result = await window.electron.chat('How to do my expenses?')
+            const result = await chat('How to do my expenses')
             setChatResponse(result)
           } catch(e) {
             console.error(e)
@@ -26,8 +28,8 @@ function App() {
           disabled={loading}>
           Chat
         </button>
-        <button onClick={() => {
-          const pong = window.electron.ping()
+        <button onClick={async () => {
+          const pong = await window.electron.ping()
           setPing(pong)
         }}>
           ping: {ping}
