@@ -1,25 +1,36 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
+  const [loading, setLoading] = useState<boolean>(false)
+  const [chatResponse, setChatResponse] = useState<string | null>(null)
+
+  const [ping, setPing] = useState<string>('ping')
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <input />
+      <span>{chatResponse ?? "nothing response"}</span>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={async () => {
+          setLoading(true)
+          try {
+            const result = await window.electron.chat('How to do my expenses?')
+            setChatResponse(result)
+          } catch(e) {
+            console.error(e)
+          } finally {
+            setLoading(false)
+          }
+        }}
+          disabled={loading}>
+          Chat
+        </button>
+        <button onClick={() => {
+          const pong = window.electron.ping()
+          setPing(pong)
+        }}>
+          ping: {ping}
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
